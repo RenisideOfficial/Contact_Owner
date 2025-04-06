@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import { ToastContainer } from "react-toastify";
 
 export const metadata: Metadata = {
   title: "Verified",
@@ -20,6 +21,7 @@ export default function RootLayout({
       <body className="font-grotesk">
         <Navbar />
         {children}
+        <ToastContainer />
       </body>
     </html>
   );

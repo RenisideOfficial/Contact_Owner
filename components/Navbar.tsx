@@ -5,7 +5,7 @@ import NavbarRight from "./NavbarRight";
 const Navbar = () => {
   return (
     <>
-      <div className="lg:flex lg:flex-row flex-col justify-between align-center m-8 p-2">
+      <div className="flex justify-between align-center p-8 bg-darker">
         <NavbarLeft />
         <NavbarRight />
       </div>
