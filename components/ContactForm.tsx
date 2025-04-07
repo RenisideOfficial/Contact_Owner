@@ -9,6 +9,7 @@ import { sendContactForm } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./ui/button";
 import { ClipLoader } from "react-spinners";
+import { Textarea } from "./ui/textarea";
 
 const ContactForm = () => {
   const [loading, setIsLoading] = useState(false);
@@ -27,6 +28,7 @@ const ContactForm = () => {
       reset();
     } catch (error) {
       console.error("Error sending: ", error);
+      toast.error("Message failed to send");
       reset();
     } finally {
       setIsLoading(false);
@@ -46,7 +48,7 @@ const ContactForm = () => {
               className={cn("w-full", errors.name && "border-red-500")}
             />
             {errors.name && (
-              <p className="text-red-500">{errors.name.message}</p>
+              <p className="text-red-500 text-sm">{errors.name.message}</p>
             )}
           </div>
 
@@ -59,7 +61,7 @@ const ContactForm = () => {
               className={cn("w-full", errors.email && "border-red-500")}
             />
             {errors.email && (
-              <p className="text-red-500">{errors.email.message}</p>
+              <p className="text-red-500 text-sm">{errors.email.message}</p>
             )}
           </div>
 
@@ -72,20 +74,19 @@ const ContactForm = () => {
               className={cn("w-full", errors.subject && "border-red-500")}
             />
             {errors.subject && (
-              <p className="text-red-500">{errors.subject.message}</p>
+              <p className="text-red-500 text-sm">{errors.subject.message}</p>
             )}
           </div>
 
           <div className="mt-4">
             <Label htmlFor="message">Message*</Label>
-            <Input
-              type="text"
+            <Textarea
               id="message"
               {...register("message")}
               className={cn("w-full", errors.message && "border-red-500")}
             />
             {errors.message && (
-              <p className="text-red-500">{errors.message.message}</p>
+              <p className="text-red-500 text-sm">{errors.message.message}</p>
             )}
           </div>
           <Button type="submit" disabled={loading}>
