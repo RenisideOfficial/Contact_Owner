@@ -1,17 +1,18 @@
-// api endpoint: backend
+// api endpoint
 import { NextResponse } from "next/server";
 import { transport, mailOption } from "@/config/nodemailer";
 import { type ContactFormData, ContactFormSchema } from "@/lib/utils";
 
-export async function POST(request: Request) {
+export async function POST(request: Response) {
     try {
+        // the json must be of type ContactFormData then assigned to the body
         const body: ContactFormData = await request.json();
         const validateData = ContactFormSchema.parse(body);
 
         await transport.sendMail({
             ...mailOption,
             text: `
-                New Form Submission
+                New contact form submission:
 
                 Name: ${validateData.name}
                 Email: ${validateData.email}
@@ -19,12 +20,12 @@ export async function POST(request: Request) {
                 Message: ${validateData.message}
             `,
             html: `
-                <h3>New Form Submission</h3>
+                <h3>New contact form submission</h3>
 
                 <p><strong>Name:</strong>${validateData.name}</p>
                 <p><strong>Email:</strong>${validateData.email}</p>
                 <p><strong>Subject:</strong>${validateData.subject}</p>
-                <p><strong>Message:</strong>${validateData.message.replace(/\n/g, '<br>')}</p>
+                <p><strong>Message</strong>${validateData.message.replace(/\n/g, '<br>')}</p>
             `
         })
 
@@ -33,13 +34,13 @@ export async function POST(request: Request) {
             { status: 200 },
         )
     } catch (error) {
-        console.error(error);
+        console.error("Not received");
         return NextResponse.json(
-            {success: false,
-             message: error instanceof Error ? error.message : "An unknown error occured!",
+            {   success: false,
+                message: error instanceof Error ? error.message : "Response failed!"
             },
             {
-                status: 500,
+                status: 500
             }
         )
     }

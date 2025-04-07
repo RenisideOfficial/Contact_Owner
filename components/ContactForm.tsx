@@ -1,15 +1,15 @@
 "use client";
-import { cn, ContactFormData, ContactFormSchema } from "@/lib/utils";
-import React, { useState } from "react";
-import { toast } from "react-toastify";
-import { useForm } from "react-hook-form";
-import { Input } from "./ui/input";
 import { Label } from "@radix-ui/react-label";
-import { sendContactForm } from "@/lib/api";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "./ui/button";
-import { ClipLoader } from "react-spinners";
+import React, { useState } from "react";
+import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
+import { Button } from "./ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { cn, ContactFormData, ContactFormSchema } from "@/lib/utils";
+import { useForm } from "react-hook-form";
+import { ClipLoader } from "react-spinners";
+import { toast } from "react-toastify";
+import { sendContactForm } from "@/lib/api";
 
 const ContactForm = () => {
   const [loading, setIsLoading] = useState(false);
@@ -20,26 +20,25 @@ const ContactForm = () => {
     reset,
   } = useForm<ContactFormData>({ resolver: zodResolver(ContactFormSchema) });
 
-  const onSubmit = async (data: ContactFormData) => {
+  async function onSubmit(data: ContactFormData) {
     try {
       setIsLoading(true);
       await sendContactForm(data);
       toast.success("Message sent successfully!");
       reset();
     } catch (error) {
-      console.error("Error sending: ", error);
-      toast.error("Message failed to send");
+      console.error(error);
+      toast.error("Failed to send message!");
       reset();
     } finally {
       setIsLoading(false);
     }
-  };
-
+  }
   return (
     <>
-      <div className="w-full lg:ml-[50%] mt-12 lg:mt-0">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mt-4">
+      <div className="w-full lg:ml-[40%]">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div>
             <Label htmlFor="name">Name*</Label>
             <Input
               type="text"
@@ -51,8 +50,7 @@ const ContactForm = () => {
               <p className="text-red-500 text-sm">{errors.name.message}</p>
             )}
           </div>
-
-          <div className="mt-4">
+          <div>
             <Label htmlFor="email">Email*</Label>
             <Input
               type="email"
@@ -64,8 +62,7 @@ const ContactForm = () => {
               <p className="text-red-500 text-sm">{errors.email.message}</p>
             )}
           </div>
-
-          <div className="mt-4">
+          <div>
             <Label htmlFor="subject">Subject*</Label>
             <Input
               type="text"
@@ -73,12 +70,9 @@ const ContactForm = () => {
               {...register("subject")}
               className={cn("w-full", errors.subject && "border-red-500")}
             />
-            {errors.subject && (
-              <p className="text-red-500 text-sm">{errors.subject.message}</p>
-            )}
+            {errors.email && <p className="text-red-500 text-sm"></p>}
           </div>
-
-          <div className="mt-4">
+          <div>
             <Label htmlFor="message">Message*</Label>
             <Textarea
               id="message"
@@ -89,8 +83,8 @@ const ContactForm = () => {
               <p className="text-red-500 text-sm">{errors.message.message}</p>
             )}
           </div>
-          <Button type="submit" disabled={loading}>
-            {loading === true ? <ClipLoader size={30} /> : "Submit"}
+          <Button type="submit" disabled={loading} className="w-full">
+            {loading ? <ClipLoader className="text-2xl" /> : "Submit"}
           </Button>
         </form>
       </div>

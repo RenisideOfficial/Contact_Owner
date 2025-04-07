@@ -1,10 +1,10 @@
 import nodemailer from "nodemailer";
 
-const email = process.env.EMAIL
-const pass = process.env.EMAIL_PASS
+const email = process.env.EMAIL;
+const pass = process.env.EMAIL_PASS;
 
-if (!email || !pass) {
-    throw new Error("Email or Email_Pass env variables not configured!");
+if(!email || !pass) {
+    throw new Error("couldn't process env variables")
 }
 
 export const transport = nodemailer.createTransport({
