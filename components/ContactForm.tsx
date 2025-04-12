@@ -36,7 +36,7 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="mt-24 mx-24">
+    <div className="mt-24 lg:mx-24">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <Label htmlFor="name">Name*</Label>
